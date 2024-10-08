@@ -1,0 +1,4841 @@
+{
+	"info": {
+		"_postman_id": "6a658044-60a4-41a0-97e4-7e4afbb17d54",
+		"name": "Komiqus-api-v2",
+		"description": "Komiqus RESTful API Version 2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38647433"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "JWT",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Extract the token from the response data and save it in the environment variable 'token'\r",
+											"pm.test(\"Extract and save token and refresh token in environment variable\", function () {\r",
+											"    let responseData = pm.response.json();\r",
+											"    let id = responseData.data.id;\r",
+											"    let token = responseData.data.token;\r",
+											"    let refreshToken = responseData.data.refreshToken;\r",
+											"    pm.environment.set(\"id\", id);\r",
+											"    pm.environment.set(\"token\", token);\r",
+											"    pm.environment.set(\"refreshToken\", refreshToken);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"dixie.candra\",\n    \"password\": \"Kitabisa123*\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh Token",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.log(pm.environment.get(\"token\"))"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Extract the token from the response data and save it in the environment variable 'token'",
+											"pm.test(\"Extract and save token and refresh token in environment variable\", function () {",
+											"    let responseData = pm.response.json();",
+											"    let token = responseData.data.token;",
+											"    pm.environment.set(\"token\", token);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refresh_token\": \"{{refreshToken}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/auth/refresh-token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"refresh-token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.log(pm.environment.get(\"token\"))"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Extract the token from the response data and save it in the environment variable 'token'",
+											"pm.test(\"Extract and save token and refresh token in environment variable\", function () {",
+											"    let responseData = pm.response.json();",
+											"    let token = responseData.data.token;",
+											"    pm.environment.set(\"token\", token);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refresh_token\": \"{{refreshToken}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/auth/logout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User Info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v2/auth/user-info/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"auth",
+								"user-info",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1394"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extract the token from the response data and save it in the environment variable 'token'\r",
+									"pm.test(\"Extract and save uid in environment variable\", function () {\r",
+									"    let responseData = pm.response.json();\r",
+									"    let uid = responseData.data.uid;\r",
+									"    pm.expect(uid).to.be.a('string');\r",
+									"    pm.environment.set(\"uid\", uid);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"userqwerty123\",\r\n    \"password\": \"kitapastibisa\",\r\n    \"name\": \"hanya orang biasa\",\r\n    \"email\": \"userqwerty123@gmail.com\",\r\n    \"role\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v2/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Verfication Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"dixie.candra@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v2/auth/send-verification-email",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"auth",
+								"send-verification-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"uid\": \"tGZuZBEZRnUunxX4cgvEZcyeP2j1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v2/auth/activate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"auth",
+								"activate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extract the token from the response data and save it in the environment variable 'token'\r",
+									"pm.test(\"Extract and save loginToken in environment variable\", function () {\r",
+									"    let responseData = pm.response.json();\r",
+									"    let token = responseData.data.token;\r",
+									"    let id = responseData.data.id;\r",
+									"    let uid = responseData.data.uid;\r",
+									"    pm.expect(token).to.be.a('string');\r",
+									"    pm.expect(uid).to.be.a('string');\r",
+									"    pm.environment.set(\"loginToken\", token);\r",
+									"    pm.environment.set(\"uid\", uid);\r",
+									"    pm.environment.set(\"id\", id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"dixie.candra\",\n    \"password\": \"Kitabisa123*\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v2/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Acces Token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extract the token from the response data and save it in the environment variable 'token'",
+									"pm.test(\"Extract and save idToken & refreshToken in environment variable\", function () {",
+									"    let responseData = pm.response.json();",
+									"    let idToken = responseData.idToken;",
+									"    let refreshToken = responseData.refreshToken",
+									"    pm.expect(idToken).to.be.a('string');",
+									"    pm.expect(refreshToken).to.be.a('string');",
+									"    pm.environment.set(\"idToken\", idToken);",
+									"    pm.environment.set(\"refreshToken\", refreshToken);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{loginToken}}\",\n    \"returnSecureToken\":true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key={{key}}",
+							"protocol": "https",
+							"host": [
+								"identitytoolkit",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"accounts:signInWithCustomToken"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(pm.environment.get(\"token\"))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"grant_type\": \"refresh_token\",\n    \"refresh_token\": \"{{refreshToken}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://securetoken.googleapis.com/v1/token?key={{key}}",
+							"protocol": "https",
+							"host": [
+								"securetoken",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"token"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"common.peoplex1x@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v2/auth/forgot-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uid\": \"FBR2F5EYlRTUpTgL0WMnfrcL1cw1\",\r\n    \"password\": \"newpassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v2/auth/reset-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{idToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}"
+							},
+							{
+								"key": "x-refresh-token",
+								"value": "{{refreshToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uid\": \"FBR2F5EYlRTUpTgL0WMnfrcL1cw1\",\r\n    \"oldPassword\": \"oldPassword\",\r\n    \"password\": \"newpassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v2/auth/change-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"auth",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Roles",
+					"item": [
+						{
+							"name": "Get List Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/roles",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/roles/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"roles",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Insert Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"President\",\n    \"description\": \"\",\n    \"isactive\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/roles",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"administrator\",\n    \"description\": \"\",\n    \"isactive\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/roles/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"roles",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/roles/10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"roles",
+										"10"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Creator Roles",
+					"item": [
+						{
+							"name": "Get List Creator Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/creator-roles",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"creator-roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a Creator Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/creator-roles/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"creator-roles",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Insert Creator Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"President\",\n    \"description\": \"\",\n    \"order\": 0,\n    \"isactive\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/creator-roles",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"creator-roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Creator Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"ice President\",\n    \"description\": \"\",\n    \"isactive\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/creator-roles/81",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"creator-roles",
+										"81"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Creator Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/creator-roles/81",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"creator-roles",
+										"81"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Series",
+					"item": [
+						{
+							"name": "Get List Series",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/series",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"series"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a Series",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/series/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"series",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Insert Series",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"President\",\n    \"description\": \"\",\n    \"type\": 0,\n    \"status\": 1,\n    \"isactive\": 1,\n    \"createdby\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/series",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"series"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Series",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Vice President\",\n    \"description\": \"\",\n    \"type\": 1,\n    \"status\": 1,\n    \"isactive\": 1,\n    \"editedby\":1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/series/65",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"series",
+										"65"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Creator Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/series/65",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"series",
+										"65"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Genres",
+					"item": [
+						{
+							"name": "Insert Genre",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Genre New 5\",\n    \"description\": \"\",\n    \"banner\": \"\",\n    \"icon\": \"\",\n    \"color_code\": \"\",\n    \"isactive\": 1,\n    \"createdby\": {{id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/genres",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"genres"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Genre",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Genre New 112\",\n    \"description\": \"test\",\n    \"banner\": \"test\",\n    \"icon\": \"\",\n    \"color_code\": \"\",\n    \"editedby\": {{id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/genres/52",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"genres",
+										"52"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Genre",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"editedby\": {{id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/genres/52",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"genres",
+										"52"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "Comics",
+					"item": [
+						{
+							"name": "Topics",
+							"item": [
+								{
+									"name": "List Topic",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/topics",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"topics"
+											],
+											"query": [
+												{
+													"key": "comic_id",
+													"value": "557",
+													"disabled": true
+												},
+												{
+													"key": "user_id",
+													"value": "1161",
+													"disabled": true
+												},
+												{
+													"key": "take",
+													"value": "2",
+													"disabled": true
+												},
+												{
+													"key": "page",
+													"value": "0",
+													"disabled": true
+												},
+												{
+													"key": "per_page",
+													"value": "4",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get a Topic",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/topics/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"topics",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Insert Topic",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n        \"comic_id\": 557,\n        \"user_id\": 1161,\n        \"title\": \"Test Topic 5\",\n        \"topic\": \"test topic 7\",\n        \"post\": 4,\n        // \"isquestion\": \"n\",\n        \"isactive\": 1,\n        \"createdby\": 1161,\n        \"editedby\": 1161\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/topics",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"topics"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Topic",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n        \"comic_id\": 557,\n        \"user_id\": 1161,\n        \"title\": \"Test Topic 53\",\n        \"topic\": \"test topic 72\",\n        \"post\": 4,\n        // \"isquestion\": \"n\",\n        \"isactive\": 1,\n        \"createdby\": 1161,\n        \"editedby\": 1161\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/topics/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"topics",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "11"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Topic",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/topics/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"topics",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Review",
+							"item": [
+								{
+									"name": "List Reviews",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/reviews",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"reviews"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1",
+													"disabled": true
+												},
+												{
+													"key": "per_page",
+													"value": "5",
+													"disabled": true
+												},
+												{
+													"key": "user_id",
+													"value": "1394",
+													"disabled": true
+												},
+												{
+													"key": "comic_id",
+													"value": "33",
+													"disabled": true
+												},
+												{
+													"key": "order_by",
+													"value": "created:desc",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get a Review",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/reviews/:review_id?uid=1394",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"reviews",
+												":review_id"
+											],
+											"query": [
+												{
+													"key": "uid",
+													"value": "1394"
+												}
+											],
+											"variable": [
+												{
+													"key": "review_id",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Insert Review",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"comic_id\": 1,\r\n    \"user_id\": 1,\r\n    \"title\": \"Test Review\",\r\n    \"review\": \"<p>Isi Review</p>\",\r\n    // \"isactive\": 0,\r\n    \"rate\": 3.5\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/reviews",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"reviews"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Review",
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"comic_id\": 1,\r\n    \"user_id\": 1,\r\n    \"title\": \"Test Review 1\",\r\n    \"review\": \"<p>Isi Review 1</p>\",\r\n    \"isactive\": 0,\r\n    \"rate\": 5\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/reviews/:review_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"reviews",
+												":review_id"
+											],
+											"variable": [
+												{
+													"key": "review_id",
+													"value": "19"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/reviews/:review_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"reviews",
+												":review_id"
+											],
+											"variable": [
+												{
+													"key": "review_id",
+													"value": "19"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "List Comics",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comics?page=1&per_page=20&creator_id=121",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comics"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "20"
+										},
+										{
+											"key": "title",
+											"value": "komiqus",
+											"disabled": true
+										},
+										{
+											"key": "types",
+											"value": "1,4",
+											"disabled": true
+										},
+										{
+											"key": "yearpublished",
+											"value": "2022",
+											"disabled": true
+										},
+										{
+											"key": "statuses",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "rates",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "section_id",
+											"value": "21",
+											"disabled": true
+										},
+										{
+											"key": "genres",
+											"value": "1,2",
+											"disabled": true
+										},
+										{
+											"key": "order_by",
+											"value": "title:desc,id:desc",
+											"disabled": true
+										},
+										{
+											"key": "read_status",
+											"value": "3",
+											"disabled": true
+										},
+										{
+											"key": "uid",
+											"value": "1394",
+											"disabled": true
+										},
+										{
+											"key": "collection_id",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "series_id",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "creator_id",
+											"value": "121"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a Comic",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comics/:identifier",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comics",
+										":identifier"
+									],
+									"variable": [
+										{
+											"key": "identifier",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Highligth Creator",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comics/:identifier/highlight-creator?page=1&per_page=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comics",
+										":identifier",
+										"highlight-creator"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "20"
+										},
+										{
+											"key": "title",
+											"value": "komiqus",
+											"disabled": true
+										},
+										{
+											"key": "types",
+											"value": "1,4",
+											"disabled": true
+										},
+										{
+											"key": "yearpublished",
+											"value": "2022",
+											"disabled": true
+										},
+										{
+											"key": "statuses",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "rates",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "section_id",
+											"value": "21",
+											"disabled": true
+										},
+										{
+											"key": "genres",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "order_by",
+											"value": "title:desc,id:desc",
+											"disabled": true
+										},
+										{
+											"key": "read_status",
+											"value": "3",
+											"disabled": true
+										},
+										{
+											"key": "uid",
+											"value": "1394",
+											"disabled": true
+										},
+										{
+											"key": "collection_id",
+											"value": "1",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "identifier",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Creator",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comics/:identifier/creators?page=1&per_page=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comics",
+										":identifier",
+										"creators"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "20"
+										},
+										{
+											"key": "title",
+											"value": "komiqus",
+											"disabled": true
+										},
+										{
+											"key": "types",
+											"value": "1,4",
+											"disabled": true
+										},
+										{
+											"key": "yearpublished",
+											"value": "2022",
+											"disabled": true
+										},
+										{
+											"key": "statuses",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "rates",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "section_id",
+											"value": "21",
+											"disabled": true
+										},
+										{
+											"key": "genres",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "order_by",
+											"value": "title:desc,id:desc",
+											"disabled": true
+										},
+										{
+											"key": "read_status",
+											"value": "3",
+											"disabled": true
+										},
+										{
+											"key": "uid",
+											"value": "1394",
+											"disabled": true
+										},
+										{
+											"key": "collection_id",
+											"value": "1",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "identifier",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Comic Similar",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comics/:identifier/similar?page=1&per_page=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comics",
+										":identifier",
+										"similar"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "20"
+										},
+										{
+											"key": "title",
+											"value": "komiqus",
+											"disabled": true
+										},
+										{
+											"key": "types",
+											"value": "1,4",
+											"disabled": true
+										},
+										{
+											"key": "yearpublished",
+											"value": "2022",
+											"disabled": true
+										},
+										{
+											"key": "statuses",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "rates",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "section_id",
+											"value": "21",
+											"disabled": true
+										},
+										{
+											"key": "genres",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "order_by",
+											"value": "title:desc,id:desc",
+											"disabled": true
+										},
+										{
+											"key": "read_status",
+											"value": "3",
+											"disabled": true
+										},
+										{
+											"key": "uid",
+											"value": "1394",
+											"disabled": true
+										},
+										{
+											"key": "collection_id",
+											"value": "1",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "identifier",
+											"value": "suit-dims"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Comic Same Creator",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comics/:identifier/similar?page=1&per_page=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comics",
+										":identifier",
+										"similar"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "20"
+										},
+										{
+											"key": "title",
+											"value": "komiqus",
+											"disabled": true
+										},
+										{
+											"key": "types",
+											"value": "1,4",
+											"disabled": true
+										},
+										{
+											"key": "yearpublished",
+											"value": "2022",
+											"disabled": true
+										},
+										{
+											"key": "statuses",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "rates",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "section_id",
+											"value": "21",
+											"disabled": true
+										},
+										{
+											"key": "genres",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "order_by",
+											"value": "title:desc,id:desc",
+											"disabled": true
+										},
+										{
+											"key": "read_status",
+											"value": "3",
+											"disabled": true
+										},
+										{
+											"key": "uid",
+											"value": "1394",
+											"disabled": true
+										},
+										{
+											"key": "collection_id",
+											"value": "1",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "identifier",
+											"value": "suit-dims"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Comic Same Series",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comics/:identifier/same-series?page=1&per_page=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comics",
+										":identifier",
+										"same-series"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "20"
+										},
+										{
+											"key": "title",
+											"value": "komiqus",
+											"disabled": true
+										},
+										{
+											"key": "types",
+											"value": "1,4",
+											"disabled": true
+										},
+										{
+											"key": "yearpublished",
+											"value": "2022",
+											"disabled": true
+										},
+										{
+											"key": "statuses",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "rates",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "section_id",
+											"value": "21",
+											"disabled": true
+										},
+										{
+											"key": "genres",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "order_by",
+											"value": "title:desc,id:desc",
+											"disabled": true
+										},
+										{
+											"key": "read_status",
+											"value": "3",
+											"disabled": true
+										},
+										{
+											"key": "uid",
+											"value": "1394",
+											"disabled": true
+										},
+										{
+											"key": "collection_id",
+											"value": "1",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "identifier",
+											"value": "999"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Route Comic berfungsi untuk mendapatkan informasi seputar komik"
+				},
+				{
+					"name": "Collection",
+					"item": [
+						{
+							"name": "Comics",
+							"item": [
+								{
+									"name": "Insert Comic into Collection",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"comic_id\":2,\n    \"createdby\": 100\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/collections/:collection_id/comics",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"collections",
+												":collection_id",
+												"comics"
+											],
+											"variable": [
+												{
+													"key": "collection_id",
+													"value": "9"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Comic inside Collection",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"comic_id\":\"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/collections/:collection_id/comics/:comic_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"collections",
+												":collection_id",
+												"comics",
+												":comic_id"
+											],
+											"variable": [
+												{
+													"key": "collection_id",
+													"value": "9"
+												},
+												{
+													"key": "comic_id",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "List Collections",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/collections?user_id=1394&order_by=order:asc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"collections"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "per_page",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "user_id",
+											"value": "1394"
+										},
+										{
+											"key": "order_by",
+											"value": "order:asc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a Collection",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/collections/:collection_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"collections",
+										":collection_id"
+									],
+									"variable": [
+										{
+											"key": "collection_id",
+											"value": "99999"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Insert Collection",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\":100,\n    \"name\":\"oke\",\n    \"description\":\"halo dek\",\n    \"ispublic\":0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/collections",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"collections"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Collection",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\":100,\n    \"name\":\"oke\",\n    \"description\":\"halo dek2\",\n    \"ispublic\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/collections/:collection_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"collections",
+										":collection_id"
+									],
+									"variable": [
+										{
+											"key": "collection_id",
+											"value": "8"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Collection",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/collections/:collection_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"collections",
+										":collection_id"
+									],
+									"variable": [
+										{
+											"key": "collection_id",
+											"value": "8"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Creators",
+					"item": [
+						{
+							"name": "Series",
+							"item": [
+								{
+									"name": "List Series",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/creators/:creator_id/series",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"creators",
+												":creator_id",
+												"series"
+											],
+											"query": [
+												{
+													"key": "fullname",
+													"value": "diki",
+													"disabled": true
+												}
+											],
+											"variable": [
+												{
+													"key": "creator_id",
+													"value": "121"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Collection",
+							"item": [
+								{
+									"name": "List Collection",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/creators/:creator_id/collections",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"creators",
+												":creator_id",
+												"collections"
+											],
+											"query": [
+												{
+													"key": "fullname",
+													"value": "diki",
+													"disabled": true
+												}
+											],
+											"variable": [
+												{
+													"key": "creator_id",
+													"value": "1168"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "List Creator",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/creators?page=1&per_page=20&order_by=id:desc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"creators"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "20"
+										},
+										{
+											"key": "fullname",
+											"value": "diki",
+											"disabled": true
+										},
+										{
+											"key": "order_by",
+											"value": "id:desc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a Creator",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/creators/:creator_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"creators",
+										":creator_id"
+									],
+									"variable": [
+										{
+											"key": "creator_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Favorite",
+					"item": [
+						{
+							"name": "Comic",
+							"item": [
+								{
+									"name": "Favorite Comic",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/favorite/:user_id/comic/:comic_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"favorite",
+												":user_id",
+												"comic",
+												":comic_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "111"
+												},
+												{
+													"key": "comic_id",
+													"value": "568"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Insert Fav Comic",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/favorite/:user_id/comic/:comic_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"favorite",
+												":user_id",
+												"comic",
+												":comic_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "111"
+												},
+												{
+													"key": "comic_id",
+													"value": "20"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Fav Comic",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/favorite/:user_id/comic/:comic_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"favorite",
+												":user_id",
+												"comic",
+												":comic_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "111"
+												},
+												{
+													"key": "comic_id",
+													"value": "20"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Creator",
+							"item": [
+								{
+									"name": "Favorite Creator",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/favorite/:user_id/creator/:creator_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"favorite",
+												":user_id",
+												"creator",
+												":creator_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "1110"
+												},
+												{
+													"key": "creator_id",
+													"value": "98"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Insert Fav Creator",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/favorite/:user_id/creator/:creator_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"favorite",
+												":user_id",
+												"creator",
+												":creator_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "1110"
+												},
+												{
+													"key": "creator_id",
+													"value": "92"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Fav Creator",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/favorite/:user_id/creator/:creator_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"favorite",
+												":user_id",
+												"creator",
+												":creator_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "1110"
+												},
+												{
+													"key": "creator_id",
+													"value": "92"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Genre",
+							"item": [
+								{
+									"name": "Favorite Genre",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/favorite/:user_id/genre/:genre_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"favorite",
+												":user_id",
+												"genre",
+												":genre_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": ""
+												},
+												{
+													"key": "genre_id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Insert Fav Genre",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/favorite/:user_id/genre/:genre_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"favorite",
+												":user_id",
+												"genre",
+												":genre_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "1"
+												},
+												{
+													"key": "genre_id",
+													"value": "20"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Fav Genre",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/favorite/:user_id/genre/:genre_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"favorite",
+												":user_id",
+												"genre",
+												":genre_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "1"
+												},
+												{
+													"key": "genre_id",
+													"value": "20"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Genres",
+					"item": [
+						{
+							"name": "Get List Genre",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/genres?page=3&per_page=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"genres"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "3"
+										},
+										{
+											"key": "per_page",
+											"value": "20"
+										},
+										{
+											"key": "name",
+											"value": "koma",
+											"disabled": true
+										},
+										{
+											"key": "order_by",
+											"value": "name:desc",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a Genre",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/genres?page=1&per_page=20&order_by=name:desc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"genres"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "20"
+										},
+										{
+											"key": "name",
+											"value": "koma",
+											"disabled": true
+										},
+										{
+											"key": "order_by",
+											"value": "name:desc"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Soclink",
+							"item": [
+								{
+									"name": "List User Soclink",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/users/:user_id/soclink",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"users",
+												":user_id",
+												"soclink"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "1168"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Insert User Soclink",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"soclink_id\": 1,\r\n    \"label\": \"test\"\r\n    // \"url\": \"\",\r\n    // \"order\": 0,\r\n    // \"isprivate\": 0\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/users/:user_id/soclink",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"users",
+												":user_id",
+												"soclink"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "1168"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update User Soclink",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"soclink_id\": 2,\r\n    \"label\": \"test 2\"\r\n    // \"url\": \"\",\r\n    // \"order\": 0,\r\n    // \"isprivate\": 0\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/users/:user_id/soclink/:user_soclink_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"users",
+												":user_id",
+												"soclink",
+												":user_soclink_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "1168"
+												},
+												{
+													"key": "user_soclink_id",
+													"value": "8"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete User Soclink",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"soclink_id\": 1,\r\n    \"label\": \"test\"\r\n    // \"url\": \"\",\r\n    // \"order\": 0,\r\n    // \"isprivate\": 0\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/users/:user_id/soclink/:user_soclink_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"users",
+												":user_id",
+												"soclink",
+												":user_soclink_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "1168"
+												},
+												{
+													"key": "user_soclink_id",
+													"value": "8"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get a User Soclink",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{idToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/users/:user_id/soclink/:user_soclink_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"users",
+												":user_id",
+												"soclink",
+												":user_soclink_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "1168"
+												},
+												{
+													"key": "user_soclink_id",
+													"value": "8"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Collection",
+							"item": [
+								{
+									"name": "List Collection",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/users/:user_id/collections",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"users",
+												":user_id",
+												"collections"
+											],
+											"query": [
+												{
+													"key": "fullname",
+													"value": "diki",
+													"disabled": true
+												}
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Follow",
+							"item": [
+								{
+									"name": "List Following",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/users/:user_id/following",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"users",
+												":user_id",
+												"following"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "List Followers",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/users/:user_id/followers",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"users",
+												":user_id",
+												"followers"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "List Following Creator",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/users/:user_id/following-creator",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"users",
+												":user_id",
+												"following-creator"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Read Status",
+							"item": [
+								{
+									"name": "List Comic",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/users/:user_id/readstatus/:readstatus_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"users",
+												":user_id",
+												"readstatus",
+												":readstatus_id"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": "2"
+												},
+												{
+													"key": "readstatus_id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Comics",
+							"item": [
+								{
+									"name": "Comic Requests",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/users/:user_id/comic-requests",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"users",
+												":user_id",
+												"comic-requests"
+											],
+											"variable": [
+												{
+													"key": "user_id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "List User",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/users?page=1&per_page=12&fullname=orang",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"users"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "12"
+										},
+										{
+											"key": "fullname",
+											"value": "orang"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User By Id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/users/:user_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"users",
+										":user_id"
+									],
+									"variable": [
+										{
+											"key": "user_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullname\": \"diki candra\"\n    // \"biodata\": \"mantuls\",\n    // \"gender\": \"F\",\n    // \"birth_place\": \"1\",\n    // \"birth_date\": \"1998-10-02\",\n    // \"city\": 1,\n    // \"province\": 1,\n    // \"country\": 1,\n    // \"phone\": \"082287469974\",\n    // \"picture\": \"user/avatar/c28ca397-4414-4d07-a244-e288fbe4ac5f\",\n    // \"banner\": \"user/banner/4fb7f2cb-13ee-4556-99fa-f1e3196a221f\",\n    // \"isactive\": 1,\n    // \"isactive_profile\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1175"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sections",
+					"item": [
+						{
+							"name": "Comics",
+							"item": [
+								{
+									"name": "List Comic Section",
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": [
+												{
+													"key": "value",
+													"value": "c3554fbfe81281c90ea06ebd0934e174eece9fbaa3b33374a8f3586cc6871e52",
+													"type": "string"
+												},
+												{
+													"key": "key",
+													"value": "x-api-key",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/sections/:id/comics",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"sections",
+												":id",
+												"comics"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "21"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "List Comic Trending",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/sections/comics/trending?page=1&per_page=20",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"sections",
+												"comics",
+												"trending"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "per_page",
+													"value": "20"
+												},
+												{
+													"key": "title",
+													"value": "komiqus",
+													"disabled": true
+												},
+												{
+													"key": "types",
+													"value": "1,4",
+													"disabled": true
+												},
+												{
+													"key": "yearpublished",
+													"value": "2022",
+													"disabled": true
+												},
+												{
+													"key": "statuses",
+													"value": "2",
+													"disabled": true
+												},
+												{
+													"key": "rates",
+													"value": "0",
+													"disabled": true
+												},
+												{
+													"key": "section_id",
+													"value": "21",
+													"disabled": true
+												},
+												{
+													"key": "genres",
+													"value": "1",
+													"disabled": true
+												},
+												{
+													"key": "order_by",
+													"value": "title:desc,id:desc",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "List Comic Latest",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/sections/comics/latest?page=1&per_page=20",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"sections",
+												"comics",
+												"latest"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "per_page",
+													"value": "20"
+												},
+												{
+													"key": "title",
+													"value": "komiqus",
+													"disabled": true
+												},
+												{
+													"key": "types",
+													"value": "1,4",
+													"disabled": true
+												},
+												{
+													"key": "yearpublished",
+													"value": "2022",
+													"disabled": true
+												},
+												{
+													"key": "statuses",
+													"value": "2",
+													"disabled": true
+												},
+												{
+													"key": "rates",
+													"value": "0",
+													"disabled": true
+												},
+												{
+													"key": "section_id",
+													"value": "21",
+													"disabled": true
+												},
+												{
+													"key": "genres",
+													"value": "1",
+													"disabled": true
+												},
+												{
+													"key": "order_by",
+													"value": "title:desc,id:desc",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "List Comic Latest Updated",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{x-api-key}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/sections/comics/latestupdated?page=1&per_page=20",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"sections",
+												"comics",
+												"latestupdated"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "per_page",
+													"value": "20"
+												},
+												{
+													"key": "title",
+													"value": "komiqus",
+													"disabled": true
+												},
+												{
+													"key": "types",
+													"value": "1,4",
+													"disabled": true
+												},
+												{
+													"key": "yearpublished",
+													"value": "2022",
+													"disabled": true
+												},
+												{
+													"key": "statuses",
+													"value": "2",
+													"disabled": true
+												},
+												{
+													"key": "rates",
+													"value": "0",
+													"disabled": true
+												},
+												{
+													"key": "section_id",
+													"value": "21",
+													"disabled": true
+												},
+												{
+													"key": "genres",
+													"value": "1",
+													"disabled": true
+												},
+												{
+													"key": "order_by",
+													"value": "title:desc,id:desc",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Creators",
+							"item": [
+								{
+									"name": "List Creator Section",
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": [
+												{
+													"key": "value",
+													"value": "c3554fbfe81281c90ea06ebd0934e174eece9fbaa3b33374a8f3586cc6871e52",
+													"type": "string"
+												},
+												{
+													"key": "key",
+													"value": "x-api-key",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/v2/sections/:id/creators",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"sections",
+												":id",
+												"creators"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "8"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get a Section",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "c3554fbfe81281c90ea06ebd0934e174eece9fbaa3b33374a8f3586cc6871e52",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/sections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"sections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Quick Link",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/quicklinks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"quicklinks"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comments",
+					"item": [
+						{
+							"name": "Fetch Comments",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comments?type=typ_review&type_id=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comments"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "typ_review"
+										},
+										{
+											"key": "type_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a Comment",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comments/86?user_id=1448",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comments",
+										"86"
+									],
+									"query": [
+										{
+											"key": "user_id",
+											"value": "1448"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Feeds",
+					"item": [
+						{
+							"name": "List Feed",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{refreshToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/feeds?page=1&per_page=40&user_id=2&order_by=created:desc&uid=1394&id=126",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"feeds"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "40"
+										},
+										{
+											"key": "user_id",
+											"value": "2"
+										},
+										{
+											"key": "order_by",
+											"value": "created:desc"
+										},
+										{
+											"key": "uid",
+											"value": "1394"
+										},
+										{
+											"key": "id",
+											"value": "126"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Feed Activity",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{refreshToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/feeds/activity?page=1&per_page=10&user_id=1394&order_by=created:desc&uid=1394",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"feeds",
+										"activity"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "10"
+										},
+										{
+											"key": "user_id",
+											"value": "1394"
+										},
+										{
+											"key": "order_by",
+											"value": "created:desc"
+										},
+										{
+											"key": "uid",
+											"value": "1394"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{x-api-key}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/health",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3002",
+			"type": "string"
+		},
+		{
+			"key": "x-api-key",
+			"value": "c3554fbfe81281c90ea06ebd0934e174eece9fbaa3b33374a8f3586cc6871e52",
+			"type": "string"
+		},
+		{
+			"key": "idToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refreshToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "key",
+			"value": "AIzaSyDbRWsJAITkVMeIRrJOPh0EHI1_UthrtCQ",
+			"type": "string"
+		}
+	]
+}
